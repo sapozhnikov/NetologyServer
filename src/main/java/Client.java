@@ -1,16 +1,42 @@
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.util.Scanner;
 
 public class Client {
     public static void main(String[] args) {
-        try (Socket socket = new Socket("localhost", 49251); OutputStream outputStream = socket.getOutputStream();
-             DataOutputStream dataOutputStream = new DataOutputStream(outputStream);
+        try (Socket socket = new Socket("localhost", 49251);
+             OutputStream outputStream = socket.getOutputStream();
+             DataOutputStream out = new DataOutputStream(outputStream);
+             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              ) {
-            dataOutputStream.writeBytes("Simplicity is the easiest path to true beauty.");
-            dataOutputStream.flush();
-        } catch (IOException e) {
+            socket.setSoTimeout(1000);
+            String serverResponse = in.readLine();
+            System.out.println("Previous town is: " + serverResponse);
+
+            System.out.println("Enter the town name:");
+            Scanner scanner = new Scanner(System.in);
+            String town = scanner.nextLine();
+
+            out.writeBytes(town);
+            out.flush();
+
+            System.out.print("Server response is: ");
+            try {
+                serverResponse = in.readLine();
+            }
+            catch (SocketTimeoutException e){
+                serverResponse = "NO RESPONSE";
+            }
+            finally {
+                System.out.println(serverResponse);
+            }
+        }
+        catch (SocketException e){
+            System.out.println("Can't connect to server");
+        }
+        catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
