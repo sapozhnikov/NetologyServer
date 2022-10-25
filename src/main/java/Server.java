@@ -19,19 +19,17 @@ public class Server {
                     out.println(town == null ? "???" : town);
 
                     String stringFromSocket = in.readLine();
-                    if (town == null){
+                    if (town == null) {
                         town = stringFromSocket;
                         out.println("OK");
                         System.out.println("Accepted answer: " + town);
-                    }
-                    else {
-                        if (town.toLowerCase().endsWith(stringFromSocket.toLowerCase().substring(0,1))){
+                    } else {
+                        if (town.toLowerCase().endsWith(stringFromSocket.toLowerCase().substring(0, 1))) {
                             //right answer
                             town = stringFromSocket;
                             out.println("OK");
                             System.out.println("Accepted answer: " + town);
-                        }
-                        else {
+                        } else {
                             //wrong answer
                             out.println("NOT OK");
                             System.out.println("Denied answer: " + stringFromSocket);

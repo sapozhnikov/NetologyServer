@@ -9,8 +9,7 @@ public class Client {
         try (Socket socket = new Socket("localhost", 49251);
              OutputStream outputStream = socket.getOutputStream();
              DataOutputStream out = new DataOutputStream(outputStream);
-             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             ) {
+             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
             socket.setSoTimeout(1000);
             String serverResponse = in.readLine();
             System.out.println("Previous town is: " + serverResponse);
@@ -25,18 +24,14 @@ public class Client {
             System.out.print("Server response is: ");
             try {
                 serverResponse = in.readLine();
-            }
-            catch (SocketTimeoutException e){
+            } catch (SocketTimeoutException e) {
                 serverResponse = "NO RESPONSE";
-            }
-            finally {
+            } finally {
                 System.out.println(serverResponse);
             }
-        }
-        catch (SocketException e){
+        } catch (SocketException e) {
             System.out.println("Can't connect to server");
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
