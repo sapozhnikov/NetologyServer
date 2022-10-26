@@ -8,7 +8,7 @@ public class Client {
     public static void main(String[] args) {
         try (Socket socket = new Socket("localhost", 49251);
              OutputStream outputStream = socket.getOutputStream();
-             DataOutputStream out = new DataOutputStream(outputStream);
+             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
              BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
             socket.setSoTimeout(1000);
             String serverResponse = in.readLine();
@@ -18,8 +18,7 @@ public class Client {
             Scanner scanner = new Scanner(System.in);
             String town = scanner.nextLine();
 
-            out.writeBytes(town);
-            out.flush();
+            out.println(town);
 
             System.out.print("Server response is: ");
             try {
@@ -32,7 +31,7 @@ public class Client {
         } catch (SocketException e) {
             System.out.println("Can't connect to server");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Can't connect to server");
         }
     }
 }

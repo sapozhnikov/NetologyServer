@@ -35,7 +35,6 @@ public class Server {
                             System.out.println("Denied answer: " + stringFromSocket);
                         }
                     }
-                    out.flush();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
